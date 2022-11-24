@@ -5,9 +5,10 @@ import { TeamChannelList } from "./TeamChannelList";
 import { TeamChannelPreview } from "./TeamChannelPreview";
 
 let discord = require("../assets/discord.png");
-let logout = require("../assets/logout.png");
+let logoutimg = require("../assets/logout.png");
+const cookies = new Cookies();
 
-const SideBar = () => (
+const SideBar = ({ logout }: any) => (
   <div className="channel-list__sidebar">
     <div className="channel-list__sidebar__icon1">
       <div className="icon1__inner">
@@ -15,8 +16,8 @@ const SideBar = () => (
       </div>
     </div>
     <div className="channel-list__sidebar__icon2">
-      <div className="icon2__inner">
-        <img src={logout} alt="logout" width="30" />
+      <div className="icon2__inner" onClick={logout}>
+        <img src={logoutimg} alt="logout" width="30" />
       </div>
     </div>
   </div>
@@ -29,9 +30,20 @@ const CompanyHeader = () => (
 );
 
 export const ChannelListContainer = () => {
+  const logout = () => {
+    cookies.remove("token");
+    cookies.remove("userId");
+    cookies.remove("username");
+    cookies.remove("fullName");
+    cookies.remove("avatarURL");
+    cookies.remove("hashedPassword");
+    cookies.remove("phoneNumber");
+
+    window.location.reload();
+  };
   return (
     <>
-      <SideBar />
+      <SideBar logout={logout} />
       <div className="channel-list__list__wrapper">
         <CompanyHeader />
         <ChannelSearch />
